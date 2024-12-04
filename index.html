@@ -1,0 +1,130 @@
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Таймер / Секундомер</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        /* Основной стиль страницы */
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #ff7a7a, #ffb79f);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            color: #fff;
+            text-align: center;
+        }
+
+        .container {
+            background-color: rgba(0, 0, 0, 0.5);
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            font-size: 3em;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        .timer {
+            font-size: 5em;
+            margin: 20px 0;
+            font-weight: 700;
+            letter-spacing: 2px;
+        }
+
+        .controls {
+            margin-top: 30px;
+        }
+
+        button {
+            background-color: #ff7a7a;
+            border: none;
+            padding: 15px 30px;
+            margin: 10px;
+            font-size: 1.2em;
+            border-radius: 10px;
+            cursor: pointer;
+            color: white;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        button:hover {
+            background-color: #ff4a4a;
+            transform: scale(1.1);
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
+
+        .reset {
+            background-color: #ffb79f;
+        }
+
+        .reset:hover {
+            background-color: #ff8c6e;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Таймер / Секундомер</h1>
+    <div class="timer" id="time">00:00</div>
+    <div class="controls">
+        <button id="startPause">Старт</button>
+        <button id="reset" class="reset">Сброс</button>
+    </div>
+</div>
+
+<script>
+    let timerInterval;
+    let seconds = 0;
+    let isRunning = false;
+
+    const timeDisplay = document.getElementById('time');
+    const startPauseButton = document.getElementById('startPause');
+    const resetButton = document.getElementById('reset');
+
+    function formatTime(seconds) {
+        const minutes = Math.floor(seconds / 60);
+        const remainingSeconds = seconds % 60;
+        return `${String(minutes).padStart(2, '0')}:${String(remainingSeconds).padStart(2, '0')}`;
+    }
+
+    function startPause() {
+        if (isRunning) {
+            clearInterval(timerInterval);
+            startPauseButton.textContent = 'Старт';
+        } else {
+            timerInterval = setInterval(() => {
+                seconds++;
+                timeDisplay.textContent = formatTime(seconds);
+            }, 1000);
+            startPauseButton.textContent = 'Пауза';
+        }
+        isRunning = !isRunning;
+    }
+
+    function reset() {
+        clearInterval(timerInterval);
+        seconds = 0;
+        timeDisplay.textContent = '00:00';
+        startPauseButton.textContent = 'Старт';
+        isRunning = false;
+    }
+
+    startPauseButton.addEventListener('click', startPause);
+    resetButton.addEventListener('click', reset);
+</script>
+
+</body>
+</html>
